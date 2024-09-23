@@ -6,6 +6,7 @@ import { RouterModule } from "@angular/router";
 
 import { AppComponent } from "./app.component";
 import { UserRegistrationFormComponent } from "./user-registration-form/user-registration-form.component";
+import { UserLoginFormComponent } from "./user-login-form/user-login-form.component";
 
 import { HttpClientModule } from "@angular/common/http";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
@@ -24,6 +25,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
   declarations: [
     AppComponent,
     UserRegistrationFormComponent,
+    UserLoginFormComponent,
   ],
   imports: [
     BrowserModule,
