@@ -14,6 +14,11 @@ export class FetchApiDataService {
 
   constructor(private http: HttpClient) { }
 
+  // Function to get token from local storage
+  private getToken(): string {
+    return localStorage.getItem('token') || '';
+  }
+
   // Non-typed response extraction
   private extractResponseData(res: any): any {
     const body = res;
@@ -45,10 +50,30 @@ export class FetchApiDataService {
   // Making the api call for the user login endpoint
   public userLogin(userDetails: any): Observable<any> {
     console.log(userDetails);
-    return this.http.post(apiUrl + `/login`, userDetails).pipe(
-    catchError(this.handleError)
+    return this.http.post(apiUrl + `/login`, userDetails, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    }).pipe(
+      map((response: any) => {
+        const token = response.token;
+        if (token) {
+          localStorage.setItem('token', token);
+        }
+        return response;
+      }),
+      catchError(this.handleError)
     );
   }
+
+  // Function to get all movies
+  public getAllMovies(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(apiUrl + `/movies`, { headers }).pipe(catchError(this.handleError));
+  }
+
+  
 
   // EVERYTHING ABOVE THIS LINE HAS BEEN VERIFIED AND WORKS //
 
@@ -61,6 +86,8 @@ export class FetchApiDataService {
       user
     }
   }
+
+
 
   // Making the api call for the Get User endpoint
   // getUser(username: string): Observable<any> {
@@ -191,15 +218,17 @@ public editUser(username: String, userDetails: any): Observable<any> {
 
 
   // Function to get all movies
-  public getAllMovies(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http.get(apiUrl + '/movies', {headers: new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-    })}).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
-  }
+  // public getAllMovies(): Observable<any> {
+  //   const token = localStorage.getItem('token');
+  //   return this.http.get(apiUrl + '/movies', {headers: new HttpHeaders({
+  //     Authorization: 'Bearer ' + token,
+  //   })}).pipe(
+  //     map(this.extractResponseData),
+  //     catchError(this.handleError)
+  //   );
+  // }
+
+
 
   // Making the api call for the Get All Movies endpoint
   // getAllMovies(): Observable<any> {
@@ -215,15 +244,15 @@ public editUser(username: String, userDetails: any): Observable<any> {
 
 
   // Function to get a specific movie with ID
-  public getMovieWithId(id: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http.get(apiUrl + 'users/' + username + '/' + '${encodeURIComponent(movie.id)}', {headers: new HttpHeaders({
-      Authorization: 'Bearer ' + token,
-    })}).pipe(
-      map(this.extractResponseData),
-      catchError(this.handleError)
-    );
-  }
+  // public getMovieWithId(id: string): Observable<any> {
+  //   const token = localStorage.getItem('token');
+  //   return this.http.get(apiUrl + 'users/' + username + '/' + '${encodeURIComponent(movie.id)}', {headers: new HttpHeaders({
+  //     Authorization: 'Bearer ' + token,
+  //   })}).pipe(
+  //     map(this.extractResponseData),
+  //     catchError(this.handleError)
+  //   );
+  // }
 
   // Making the api call for the Get ONE Movies endpoint
   // getOneMovies(title: string): Observable<any> {
