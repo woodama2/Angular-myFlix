@@ -1,0 +1,9 @@
+.scroll-container {
+  max-height: 100vh;  // Ensure it does not exceed the screen height
+  overflow-y: auto;   // Enable vertical scrolling
+  padding: 10px;      // Optional: Add padding for better appearance
+}
+
+mat-card {
+  margin-bottom: 15px;  // Optional: Space between cards
+}

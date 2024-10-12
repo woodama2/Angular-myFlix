@@ -1,0 +1,15 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;  // full viewport height
+}
+
+h1 {
+  text-align: center;
+}
+
+button {
+  margin: 5px;
+}
