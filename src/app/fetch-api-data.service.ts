@@ -80,12 +80,20 @@ export class FetchApiDataService {
 
 
   // Function to get user
-  public getUser(): any {
-    const user: any = JSON.parse(localStorage.getItem('user')||"");
-    return {
-      user
-    }
-  }
+  public getUserById(id: string): Observable<any> {
+    return this.http.get(apiUrl + `/user/${id}`, {headers: new HttpHeaders(
+      {
+        Authorization: `Bearer ${this.getToken()}`,
+      }),}).pipe(
+      map(this.extractResponseData), catchError(this.handleError));
+        }
+
+
+  //   const user: any = JSON.parse(localStorage.getItem('user')||"");
+  //   return {
+  //     user
+  //   }
+  // }
 
 
 

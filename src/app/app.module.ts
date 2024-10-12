@@ -3,14 +3,17 @@ import { BrowserModule } from "@angular/platform-browser";
 
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule, Routes } from "@angular/router";
+import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
 import { AppComponent } from "./app.component";
 import { UserRegistrationFormComponent } from "./user-registration-form/user-registration-form.component";
 import { UserLoginFormComponent } from "./user-login-form/user-login-form.component";
 import { MovieCardComponent } from "./movie-card/movie-card.component";
+import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
+import { ProfilePageComponent } from "./profile-page/profile-page.component";
+import { MessageBoxComponent } from "./message-box/message-box.component";
 
 import { HttpClientModule } from "@angular/common/http";
-import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
@@ -22,8 +25,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
-import { ProfilePageComponent } from "./profile-page/profile-page.component";
+
+
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -38,6 +41,8 @@ const appRoutes: Routes = [
     UserRegistrationFormComponent,
     UserLoginFormComponent,
     MovieCardComponent,
+    ProfilePageComponent,
+    MessageBoxComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +60,9 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     MatToolbarModule,
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 
