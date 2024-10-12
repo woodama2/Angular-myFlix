@@ -75,6 +75,8 @@ export class FetchApiDataService {
 
   
 
+
+
   // EVERYTHING ABOVE THIS LINE HAS BEEN VERIFIED AND WORKS //
 
 
@@ -178,9 +180,9 @@ public editUser(username: String, userDetails: any): Observable<any> {
   // }
 
   // Function to add favorite movie
-  public addFavoriteMovie(username: String, movieTitle: String): Observable<any> {
+  public addFavoriteMovie(username: String, movieID: String): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.post(apiUrl + 'users/' + username + '/' + movieTitle, {}, {headers: new HttpHeaders({
+    return this.http.post(apiUrl + `/users/${username}/${movieID}`, {}, {headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
       map(this.extractResponseData),
@@ -201,10 +203,10 @@ public editUser(username: String, userDetails: any): Observable<any> {
   // }
 
 
-  // Funciton to delete favorite movie
-  public deleteFavoriteMovie(username: String, movieTitle: String): Observable<any> {
+  // Function to delete favorite movie
+  public deleteFavoriteMovie(username: String, movieID: String): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.delete(apiUrl + 'users/' + username + '/' + movieTitle, {headers: new HttpHeaders({
+    return this.http.delete(apiUrl + `/users/${username}/${movieID}`, {headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
   map(this.extractResponseData),

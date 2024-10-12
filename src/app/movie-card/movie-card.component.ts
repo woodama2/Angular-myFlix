@@ -34,6 +34,7 @@ export class MovieCardComponent implements OnInit {
   logout(): void {
     this.router.navigate(["welcome"]);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   }
 
   redirectProfile(): void {
@@ -42,32 +43,62 @@ export class MovieCardComponent implements OnInit {
 
   modifyFavoriteMovies(movie: any): void {
     let user = JSON.parse(localStorage.getItem("user") || "{}");
-    let icon = document.getElementById(`${movie._id}-favorite-icon`);
 
-    if (user.favoriteMovies.includes(movie._id)) {
-      this.fetchApiData.deleteFavoriteMovie(user.id, movie.title).subscribe(res => {
-        icon?.setAttribute("fontIcon", "favorite_border");
-
-        console.log("del success")
-        console.log(res);
-        user.favoriteMovies = res.favoriteMovies;
-        localStorage.setItem("user", JSON.stringify(user))
-      }, err => {
-        console.error(err)
-      })
-    } else {
-      this.fetchApiData.addFavoriteMovie(user.id, movie.title).subscribe(res => {
-        icon?.setAttribute("fontIcon", "favorite");
-
-        console.log("add success")
-        console.log(res);
-        user.favoriteMovies = res.favoriteMovies;
-        localStorage.setItem("user", JSON.stringify(user))
-      }, err => {
-        console.error(err)
-      })
+    // Ensure favoriteMovies is an array
+    if (!user.favoriteMovies) {
+      user.favorites = [];
     }
-    localStorage.setItem("user", JSON.stringify(user));
+
+    const isFavorite = user.favorites.includes(String(movie._id));
+
+    if (isFavorite) {
+      // Remove from favorites
+      this.fetchApiData.deleteFavoriteMovie(user.id, movie._id).subscribe(res => {
+        console.log("Successfully removed from favorites");
+        user.favoriteMovies = res.favoriteMovies;
+        movie.isFavorite = false;
+        localStorage.setItem("user", JSON.stringify(user));
+      }, err => {
+        console.error("Error removing from favorites:", err);
+      });
+    } else {
+      // Add to favorites
+      this.fetchApiData.addFavoriteMovie(user.id, movie._id).subscribe(res => {
+        console.log("Successfully added to favorites");
+        user.favoriteMovies = res.favoriteMovies;
+        movie.isFavorite = true;
+        localStorage.setItem("user", JSON.stringify(user));
+      }, err => {
+        console.error("Error adding to favorites:", err);
+      });
+    }
+
+    // let icon = document.getElementById(`${movie._id}-favorite-icon`);
+
+    // if (user.favoriteMovies.includes(movie._id)) {
+    //   this.fetchApiData.deleteFavoriteMovie(user.id, movie.title).subscribe(res => {
+    //     icon?.setAttribute("fontIcon", "favorite_border");
+
+    //     console.log("del success")
+    //     console.log(res);
+    //     user.favoriteMovies = res.favoriteMovies;
+    //     localStorage.setItem("user", JSON.stringify(user))
+    //   }, err => {
+    //     console.error(err)
+    //   })
+    // } else {
+    //   this.fetchApiData.addFavoriteMovie(user.id, movie.title).subscribe(res => {
+    //     icon?.setAttribute("fontIcon", "favorite");
+
+    //     console.log("add success")
+    //     console.log(res);
+    //     user.favoriteMovies = res.favoriteMovies;
+    //     localStorage.setItem("user", JSON.stringify(user))
+    //   }, err => {
+    //     console.error(err)
+    //   })
+    // }
+    // localStorage.setItem("user", JSON.stringify(user));
   }
 
   showGenre(movie: any): void {

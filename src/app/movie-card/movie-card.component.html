@@ -33,11 +33,15 @@
         Synopsis
       </button>
       <mat-icon
-        fontIcon="{{ movie.isFavorite ? 'favorite' : 'favorite_border' }}"
-        id="{{ movie._id }}-favorite-icon"
+        [ngClass]="{
+          favorite: movie.isFavorite,
+          favorite_border: !movie.isFavorite
+        }"
         (click)="modifyFavoriteMovies(movie)"
-        >favorite_border</mat-icon
+        aria-label="Toggle favorite"
       >
+        {{ movie.isFavorite ? "favorite" : "favorite_border" }}
+      </mat-icon>
     </mat-card-actions>
   </mat-card>
 </div>
