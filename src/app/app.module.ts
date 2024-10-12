@@ -23,11 +23,12 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { WelcomePageComponent } from "./welcome-page/welcome-page.component";
-import { NavbarComponent } from "./navbar/navbar.component";
+import { ProfilePageComponent } from "./profile-page/profile-page.component";
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
   { path: 'movies', component: MovieCardComponent },
+  { path: 'profile', component: ProfilePageComponent },
   { path: '', redirectTo: 'welcome', pathMatch: 'prefix'},
 ];
 
@@ -37,7 +38,6 @@ const appRoutes: Routes = [
     UserRegistrationFormComponent,
     UserLoginFormComponent,
     MovieCardComponent,
-    NavbarComponent,
   ],
   imports: [
     BrowserModule,
