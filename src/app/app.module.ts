@@ -28,13 +28,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 
 
-const appRoutes: Routes = [
-  { path: 'welcome', component: WelcomePageComponent },
-  { path: 'movies', component: MovieCardComponent },
-  { path: 'profile', component: ProfilePageComponent },
-  { path: '', redirectTo: 'welcome', pathMatch: 'prefix'},
-];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +40,6 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(appRoutes),
     HttpClientModule,
     MatInputModule,
     MatButtonModule,
@@ -61,7 +53,7 @@ const appRoutes: Routes = [
     MatToolbarModule,
   ],
   providers: [
-    provideAnimationsAsync()
+
   ],
   bootstrap: [AppComponent]
 })
