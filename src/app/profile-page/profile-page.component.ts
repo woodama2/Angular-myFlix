@@ -12,7 +12,7 @@ export class ProfilePageComponent implements OnInit {
   favoriteMovies: any[] = [];
   movies: any[] = [];
   showPassword: boolean = false; // New variable to toggle password visibility
-  originalPassword: string | null = null; // Hold the original password separately
+  // originalPassword: string | null = null; // Hold the original password separately
   
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -62,11 +62,12 @@ export class ProfilePageComponent implements OnInit {
         id: res._id,
         token: this.userData.token,
         username: this.userData.username,
+        password: "",
         // Use the formatted birthday here
         birthday: formattedBirthday,
         favorites: this.userData.favorites,
       };
-      this.originalPassword = this.userData.password; // Store the original password
+      // this.originalPassword = this.userData.password; // Store the original password
       localStorage.setItem("user", JSON.stringify(this.userData));
       this.getfavoriteMovies();
     })
@@ -94,17 +95,19 @@ export class ProfilePageComponent implements OnInit {
     // Format the birthday to 'yyyy-MM-dd'
     const formattedBirthday = birthday ? new Date(birthday).toISOString().split('T')[0] : '';
 
-
-    this.fetchApiData.editUser(username, {
+    const userDetails = {
       username,
       password,
       email,
-      birthday: formattedBirthday // Use the formatted birthday here
-      }).subscribe((res: any) => {
+      birthday: formattedBirthday
+    };
+
+
+    this.fetchApiData.editUser(username, userDetails).subscribe((res: any) => {
       this.userData = {
         ...res,
         id: res._id,
-        password: this.userData.password,
+        password: userDetails.password,
         token: this.userData.token,
         birthday: formattedBirthday // Ensure updated birthday is reflected here
       };
