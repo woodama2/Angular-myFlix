@@ -106,12 +106,17 @@
           <mat-card-actions>
             <button
               mat-raised-button
-              (click)="removeFromFavorite(movie)"
+              (click)="modifyFavoriteMovies(movie)"
               color="primary"
               style="margin-right: 10px"
             >
               Remove from Favorites
             </button>
+            <mat-icon
+              [fontIcon]="movie.isFavorite ? 'favorite' : 'favorite_border'"
+              id="{{ movie._id }}-favorite-icon"
+              (click)="modifyFavoriteMovies(movie)"
+            ></mat-icon>
           </mat-card-actions>
         </mat-card>
       </div>

@@ -41,9 +41,9 @@ export class FetchApiDataService {
 
 
   // Making the api call for the user registration endpoint
-  public userRegistration(userDetails: any): Observable<any> {
-    console.log(userDetails);
-    return this.http.post(apiUrl + `/users`, userDetails).pipe(
+  public userRegistration(userData: any): Observable<any> {
+    console.log(userData);
+    return this.http.post(apiUrl + `/users`, userData).pipe(
     catchError(this.handleError)
     );
   }
@@ -147,8 +147,7 @@ public editUser(username: string, userDetails: any): Observable<any> {
   // Function to delete user
   public deleteUser(username: string): Observable<any> {
     const token = this.getToken();
-    return this.http.delete(apiUrl + 'users/' + username, {headers: this.createAuthorizationHeader()}).pipe(
-      map(this.extractResponseData),
+    return this.http.delete(apiUrl + `/users/${username}`, {headers: this.createAuthorizationHeader(), responseType: 'text'}).pipe(
       catchError(this.handleError)
     );
   }

@@ -18,7 +18,7 @@ export class ProfilePageComponent implements OnInit {
     public fetchApiData: FetchApiDataService,
     public router: Router
   ) {
-    this.userData = JSON.parse(localStorage.getItem("user") || "");
+    this.userData = JSON.parse(localStorage.getItem("user") || "{}");
   }
 
 
@@ -97,14 +97,14 @@ export class ProfilePageComponent implements OnInit {
 
     this.fetchApiData.editUser(username, {
       username,
-      password: this.originalPassword, // Send the original password for hashing
+      password,
       email,
       birthday: formattedBirthday // Use the formatted birthday here
       }).subscribe((res: any) => {
       this.userData = {
         ...res,
         id: res._id,
-        originalPassword: password,
+        password: this.userData.password,
         token: this.userData.token,
         birthday: formattedBirthday // Ensure updated birthday is reflected here
       };
@@ -146,16 +146,30 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
+  modifyFavoriteMovies(movie: any): void {
+    let user = JSON.parse(localStorage.getItem("user") || "{}");
 
+    // Ensure user.favorites exists and is an array
+    user.favorites = user.favorites || [];
 
-  removeFromFavorite(movie: any): void {
-    this.fetchApiData.deleteFavoriteMovie(this.userData.username, movie._id).subscribe((res: any) => {
-      this.userData.favorites = res.favoriteMovies;
-      this.getfavoriteMovies();
-    }, (err: any) => {
-      console.error(err)
-    })
+    const isFavorite = user.favorites.includes(movie._id);
+    console.log("Current favorite status:", isFavorite); //Debug log
+
+    // Toggle favorite status based on the current state
+    const request = isFavorite
+    ? this.fetchApiData.deleteFavoriteMovie(user.username, movie._id)
+    : this.fetchApiData.addFavoriteMovie(user.username, movie._id);
   }
+
+
+  // removeFromFavorite(movie: any): void {
+  //   this.fetchApiData.deleteFavoriteMovie(userData.username, movie._id).subscribe((res: any) => {
+  //     this.userData.favorites = res.favoriteMovies;
+  //     this.getfavoriteMovies();
+  //   }, (err: any) => {
+  //     console.error(err)
+  //   })
+  // }
 
   logout(): void {
     this.router.navigate(["welcome"]);
