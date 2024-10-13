@@ -149,19 +149,45 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
-  modifyFavoriteMovies(movie: any): void {
-    let user = JSON.parse(localStorage.getItem("user") || "{}");
+  // modifyFavoriteMovies(movie: any): void {
+  //   let user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  //   // Ensure user.favorites exists and is an array
+  //   user.favorites = user.favorites || [];
+
+  //   const isFavorite = user.favorites.includes(movie._id);
+  //   console.log("Current favorite status:", isFavorite); //Debug log
+
+  //   // Toggle favorite status based on the current state
+  //   const request = isFavorite
+  //   ? this.fetchApiData.deleteFavoriteMovie(user.username, movie._id)
+  //   : this.fetchApiData.addFavoriteMovie(user.username, movie._id);
+  // }
+
+  deleteFavoriteMovie(movie: any): void {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
 
     // Ensure user.favorites exists and is an array
     user.favorites = user.favorites || [];
 
-    const isFavorite = user.favorites.includes(movie._id);
-    console.log("Current favorite status:", isFavorite); //Debug log
-
-    // Toggle favorite status based on the current state
-    const request = isFavorite
-    ? this.fetchApiData.deleteFavoriteMovie(user.username, movie._id)
-    : this.fetchApiData.addFavoriteMovie(user.username, movie._id);
+    // Check if the movie is currently in favorites
+    if (user.favorites.includes(movie._id)) {
+      this.fetchApiData.deleteFavoriteMovie(user.username, movie._id).subscribe({
+        next: () => {
+          console.log (`Movie with ID ${movie._id} removed from favorites.`); //debug log
+          // Remove the movie from the user's favorites in local storage
+          user.favorites = user.favorites.filter((favId: string) => favId !== movie._id);
+          localStorage.setItem("user", JSON.stringify(user));
+          // Remove the movie from the displayed list of favoriteMovies
+          this.favoriteMovies = this.favoriteMovies.filter(favMovie => favMovie._id !== movie._id);
+        },
+        error: (error) => {
+          console.error("Error deleting favorite movie:", error);
+        }
+      });
+    } else {
+      console.log(`Movie with ID ${movie._id} is not in favorites.`); //debug log
+    }
   }
 
 
