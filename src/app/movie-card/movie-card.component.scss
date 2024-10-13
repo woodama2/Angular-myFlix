@@ -1,9 +1,93 @@
-.scroll-container {
-  max-height: 100vh;  // Ensure it does not exceed the screen height
-  overflow-y: auto;   // Enable vertical scrolling
-  padding: 10px;      // Optional: Add padding for better appearance
+.movie-card-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px; // Add padding for spacing
+
+  .nav-buttons {
+    margin-bottom: 20px; // Space between buttons and movie cards
+  }
+
+  .button {
+    color: primary;
+  }
+
+  .scroll-container {
+    // max-height: 80vh; // Adjust height for better use of space
+    // overflow-y: auto; // Enable scrolling
+    // width: 100%; // Take full width
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    // flex-direction: column;
+    // align-items: center;
+  }
+
+  .movie-card {
+    width: 280px;
+    margin: 20px;
+    // display: "flex";
+    // flex: 1;
+    // margin-bottom: 15px; // Space between cards
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    // transition: transform 0.3s; // Smooth hover effect
+    // &:hover {
+    //   transform: scale(1.02); // Slight scale effect on hover
+    // }
+
+    img {
+      width: 100%; // Set width to fill the card
+      height: 400px; // Set a fixed height (adjust as needed)
+      object-fit: contain; // Maintain aspect ratio and cover the area
+      border-radius: 5px; // Optional to match the card's aesthetics
+    }
+
+    mat-card {
+      margin: 10px; /* Adjust margins for larger cards */
+      // flex: 0 1 calc(33.33% - 20px); /* Allow 3 cards per row on larger screens */
+    }
+
+    mat-card-header {
+      background-color: #f5f5f5; // Light background for card header
+      padding: 10px;
+      border-radius: 5px; // Slight rounding for aesthetic
+    }
+
+    mat-card-actions {
+      display: flex;
+      justify-content: space-between; // Space actions evenly
+      align-items: center; // Center vertically
+    }
+
+    mat-icon {
+      cursor: pointer; // Indicate that the icon is clickable
+      font-size: 24px; // Larger icon size for better visibility
+    }
+  }
 }
 
-mat-card {
-  margin-bottom: 15px;  // Optional: Space between cards
+/* Adjustments for larger screens */
+@media (min-width: 2000px) {
+  .movie-card-container {
+    max-width: 2000px; /* Limit the width on larger screens */
+    margin: 0 auto; /* Center the container */
+  }
+
+  .movie-card {
+    justify-content: space-between; /* Space movies evenly */
+    flex: 0 1 calc(33.33% - 20px);
+  }
+
+  mat-card {
+    margin: 10px; /* Adjust margins for larger cards */
+    flex: 0 1 calc(33.33% - 20px); /* Allow 3 cards per row on larger screens */ 
+  }
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 767px) {
+  mat-card {
+    flex: 0 1 calc(100% - 20px); /* Full width cards on smaller screens */
+  }
 }

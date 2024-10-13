@@ -12,6 +12,7 @@ export class ProfilePageComponent implements OnInit {
   favoriteMovies: any[] = [];
   movies: any[] = [];
   showPassword: boolean = false; // New variable to toggle password visibility
+  originalPassword: string | null = null; // Hold the original password separately
   
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -59,13 +60,13 @@ export class ProfilePageComponent implements OnInit {
       this.userData = {
         ...res,
         id: res._id,
-
         token: this.userData.token,
         username: this.userData.username,
         // Use the formatted birthday here
         birthday: formattedBirthday,
         favorites: this.userData.favorites,
       };
+      this.originalPassword = this.userData.password; // Store the original password
       localStorage.setItem("user", JSON.stringify(this.userData));
       this.getfavoriteMovies();
     })
@@ -80,7 +81,9 @@ export class ProfilePageComponent implements OnInit {
   }
 
   updateUser(): void {
-    const { username, password, email, birthday } = this.userData;
+    const { username, email, password, birthday } = this.userData;
+
+    // const password = this.userData.password; // This should be the value from the input field
     
     // basic validation before making the API call
     if (!username || !password || !email ){
@@ -91,16 +94,17 @@ export class ProfilePageComponent implements OnInit {
     // Format the birthday to 'yyyy-MM-dd'
     const formattedBirthday = birthday ? new Date(birthday).toISOString().split('T')[0] : '';
 
+
     this.fetchApiData.editUser(username, {
       username,
-      password,
+      password: this.originalPassword, // Send the original password for hashing
       email,
       birthday: formattedBirthday // Use the formatted birthday here
       }).subscribe((res: any) => {
       this.userData = {
         ...res,
         id: res._id,
-        password: this.userData.password, // Retain the password if not updated
+        originalPassword: password,
         token: this.userData.token,
         birthday: formattedBirthday // Ensure updated birthday is reflected here
       };
