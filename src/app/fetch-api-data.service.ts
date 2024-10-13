@@ -80,11 +80,6 @@ export class FetchApiDataService {
     return user;
   }  
 
-
-
-  // EVERYTHING ABOVE THIS LINE HAS BEEN VERIFIED AND WORKS //
-
-
   // Private method to generate headers, which can be called whenever
   private createAuthorizationHeader(): HttpHeaders {
     return new HttpHeaders({
@@ -92,6 +87,11 @@ export class FetchApiDataService {
       'Content-Type': 'application/json',
     });
   }
+
+  // EVERYTHING ABOVE THIS LINE HAS BEEN VERIFIED AND WORKS //
+
+
+
 
 
 

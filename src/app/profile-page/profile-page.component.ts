@@ -43,6 +43,7 @@ export class ProfilePageComponent implements OnInit {
     }
   }
 
+
   getUser(): void {
     // Check if userData has a valid ID before making the API call
     // if (!this.userData.Id) {
@@ -78,20 +79,50 @@ export class ProfilePageComponent implements OnInit {
   }
 
   updateUser(): void {
-    const username = this.userData.username;
-    this.fetchApiData.editUser(username, this.userData).subscribe((res: any) => {
+    const { username, password, email, birthday } = this.userData;
+    
+    // basic validation before making the API call
+    if (!username || !password || !email ){
+      console.error("Username, password, and email are required fields.");
+      return; // Prevent the API call if validation fails
+    }
+
+    // Format the birthday to 'yyyy-MM-dd'
+    const formattedBirthday = birthday ? new Date(birthday).toISOString().split('T')[0] : '';
+
+    this.fetchApiData.editUser(username, {
+      username,
+      password,
+      email,
+      birthday: formattedBirthday // Use the formatted birthday here
+      }).subscribe((res: any) => {
       this.userData = {
         ...res,
         id: res._id,
-        password: this.userData.password,
+        password: this.userData.password, // Retain the password if not updated
         token: this.userData.token
       };
       localStorage.setItem("user", JSON.stringify(this.userData));
       this.getfavoriteMovies();
+      console.log("User updated successfully:", res);
     }, (err: any) => {
-      console.error(err)
-    })
+      console.error("Error udpdating user:", err);
+    });
   }
+
+  deleteUser(): void {
+    const username = this.userData.username;
+    this.fetchApiData.deleteUser(username).subscribe((res: any) => {
+      // Handle the response if needed
+      console.log("User deleted successfully:", res);
+      // Optionally remove user data from localStorage
+      localStorage.removeItem("user");
+      this.router.navigate(["welcome"]); // Redirect to welcome page after deletion
+    }, (err: any) => {
+      console.error("Error deleting user:", err);
+    });
+  }
+
   resetUser(): void {
     this.userData = JSON.parse(localStorage.getItem("user") || "");
   }

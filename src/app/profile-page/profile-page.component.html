@@ -6,6 +6,14 @@
 >
   Logout
 </button>
+<button
+  mat-raised-button
+  (click)="backToMovie()"
+  color="primary"
+  style="margin-right: 10px"
+>
+  Back To Movies
+</button>
 <mat-card>
   <mat-card-header>
     <mat-card-title>User Profile</mat-card-title>
@@ -64,15 +72,15 @@
       color="primary"
       style="margin-right: 10px"
     >
-      Update
+      Update User
     </button>
     <button
       mat-raised-button
-      (click)="backToMovie()"
+      (click)="deleteUser()"
       color="primary"
       style="margin-right: 10px"
     >
-      Back To Movies
+      Delete User
     </button>
   </mat-card-actions>
 
