@@ -11,6 +11,7 @@ export class ProfilePageComponent implements OnInit {
   userData: any = {};
   favoriteMovies: any[] = [];
   movies: any[] = [];
+  showPassword: boolean = false; // New variable to toggle password visibility
   
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -58,7 +59,7 @@ export class ProfilePageComponent implements OnInit {
       this.userData = {
         ...res,
         id: res._id,
-        password: this.userData.password,
+
         token: this.userData.token,
         username: this.userData.username,
         // Use the formatted birthday here
