@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 })
 export class UserLoginFormComponent implements OnInit {
 
-  @Input() userData = { username: '', password: '', email: '', birthday: ''};
+  @Input() userData = { username: '', password: '', email: '', birthday: '', favorites: []};
 
   constructor(
     public fetchApiData: FetchApiDataService,
@@ -34,6 +34,10 @@ export class UserLoginFormComponent implements OnInit {
   // This is the function responsible for sending the form inputs to the backend
   loginUser(): void {
     this.fetchApiData.userLogin(this.userData).subscribe((result) => {
+      // Assuming `result` contains user data and token
+      localStorage.setItem("user", JSON.stringify(result.user)); // Save user data
+      localStorage.setItem("token", result.token); // Save token
+
       // Logic for a successful user login goes here! (To be implemented)
       this.dialogRef.close(); // This will close the modal on success!
       this.snackBar.open(result, 'OK', {

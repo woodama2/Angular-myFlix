@@ -50,8 +50,8 @@
         <input
           matInput
           [(ngModel)]="userData.birthday"
-          placeholder="date"
-          type="Birthday"
+          placeholder="Birthday"
+          type="date"
           name="Birthday"
         />
       </mat-form-field>
@@ -75,4 +75,31 @@
       Back To Movies
     </button>
   </mat-card-actions>
+
+  <!-- Favorite Movies -->
+  <mat-card-title>Favorite Movies</mat-card-title>
+  <div style="display: flex">
+    <mat-card
+      *ngFor="let movie of this.favoriteMovies"
+      style="width: 280px; margin-right: 10px"
+    >
+      <mat-card-header>
+        <mat-card-title>{{ movie.Title }}</mat-card-title>
+        <mat-card-subtitle
+          >Directed by: {{ movie.Director.Name }}</mat-card-subtitle
+        >
+      </mat-card-header>
+      <img src="{{ movie.ImagePath }}" />
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          (click)="removeFromFavorite(movie)"
+          color="primary"
+          style="margin-right: 10px"
+        >
+          Remove from favoriteMovies
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </mat-card>

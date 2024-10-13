@@ -10,16 +10,41 @@ import { Router } from '@angular/router';
 export class ProfilePageComponent implements OnInit {
   userData: any = {};
   favoriteMovies: any[] = [];
+  movies: any[] = [];
   
   constructor(
     public fetchApiData: FetchApiDataService,
     public router: Router
   ) {
-    this.userData = JSON.parse(localStorage.getItem("user") || "");
+    const userDataString = localStorage.getItem("user");
+
+    if (userDataString) {
+      try {
+        this.userData = JSON.parse(userDataString);
+      } catch (e) {
+        console.error("Failed to parse user data:", e);
+        this.userData = {} // Initialize to empty object if parsing fails
+      }
+    }
   }
 
   ngOnInit(): void {
-    this.getUser();
+    if (this.userData) {
+      this.getUser();
+      this.getMovies()
+      console.log(this.userData)
+    } else {
+      console.error("User data is not available or invalid.");
+      // this.router.navigate(["welcome"]); // Redirect if user data is invalid
+    }
+  }
+
+  getMovies(): void {
+    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
+      this.movies = resp;
+      console.log(this.movies);
+      return this.movies;
+    });
   }
 
   updateUser(): void {
@@ -45,9 +70,9 @@ export class ProfilePageComponent implements OnInit {
   }
 
   getfavoriteMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((res: any) => {
-      this.favoriteMovies = res.filter((movie: any) => {
-        return this.userData.favoriteMovies.includes(movie._id)
+    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
+      this.movies = resp.filter((movie: any) => {
+        return this.userData.favorites.includes(movie._id)
       })
     }, (err: any) => {
       console.error(err);
@@ -55,7 +80,13 @@ export class ProfilePageComponent implements OnInit {
   }
 
   getUser(): void {
-    this.fetchApiData.getUserById(this.userData.id).subscribe((res: any) => {
+    // Check if userData has a valid ID before making the API call
+    // if (!this.userData._id) {
+    //   console.error("User ID is not available.");
+    //   this.router.navigate(["welcome"]); // Redirect if ID is not available
+    //   return;
+    // }
+    this.fetchApiData.getUserByUsername(this.userData._id).subscribe((res: any) => {
       this.userData = {
         ...res,
         id: res._id,

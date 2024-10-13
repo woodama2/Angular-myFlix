@@ -13,6 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class MovieCardComponent implements OnInit {
   movies: any[] = [];
+  user: any = {};
+  FavoriteMovies: any[] = [];
+  isFavMovie: boolean = false;
+  userData = { username: "", FavoriteMovies: [] };
+
   constructor(
     public fetchApiData: FetchApiDataService,
     public router: Router,
@@ -41,12 +46,25 @@ export class MovieCardComponent implements OnInit {
     this.router.navigate(["profile"]);
   }
 
+  getFavMovies(): void {
+    this.user = this.fetchApiData.getUser();
+    this.userData.FavoriteMovies = this.user.favorites;
+    this.FavoriteMovies = this.user.FavoriteMovies;
+    console.log('Users fav movies', this.FavoriteMovies);
+  }
+
+  isFavoriteMovie(movieId: string): boolean {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.FavoriteMovies.indexOf(movieId) >= 0;
+  }
+
   modifyFavoriteMovies(movie: any): void {
     let user = JSON.parse(localStorage.getItem("user") || "{}");
 
     // Ensure favoriteMovies is an array
     if (!user.favoriteMovies) {
       user.favorites = [];
+      console.log(user.favorites);
     }
 
     const isFavorite = user.favorites.includes(String(movie._id));

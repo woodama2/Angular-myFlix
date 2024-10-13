@@ -80,10 +80,16 @@ export class FetchApiDataService {
   // EVERYTHING ABOVE THIS LINE HAS BEEN VERIFIED AND WORKS //
 
 
+  // Function to get the active user
+  public getUser(): Observable<any> {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user;
+  }
+
 
   // Function to get user
-  public getUserById(id: string): Observable<any> {
-    return this.http.get(apiUrl + `/user/${id}`, {headers: new HttpHeaders(
+  public getUserByUsername(username: string): Observable<any> {
+    return this.http.get(apiUrl + `/users/${username}`, {headers: new HttpHeaders(
       {
         Authorization: `Bearer ${this.getToken()}`,
       }),}).pipe(
@@ -115,7 +121,7 @@ export class FetchApiDataService {
   // Function to edit user
 public editUser(username: String, userDetails: any): Observable<any> {
   const token = localStorage.getItem('token');
-  return this.http.put(apiUrl + `users/` + username, userDetails, {headers: new HttpHeaders({
+  return this.http.put(apiUrl + `/users/${username}`, userDetails, {headers: new HttpHeaders({
     Authorization: 'Bearer ' + token,
   })}).pipe(
     map(this.extractResponseData),
@@ -162,7 +168,7 @@ public editUser(username: String, userDetails: any): Observable<any> {
   public getUserFavoriteMovies(): any {
     const user: any = JSON.parse(localStorage.getItem('user')|| "");
     return {
-      user: user.FavoriteMovies
+      user: user.favorites
     }
   }
 
@@ -180,9 +186,9 @@ public editUser(username: String, userDetails: any): Observable<any> {
   // }
 
   // Function to add favorite movie
-  public addFavoriteMovie(username: String, movieID: String): Observable<any> {
+  public addFavoriteMovie(username: String, movieId: String): Observable<any> {
     const token = localStorage.getItem('token');
-    return this.http.post(apiUrl + `/users/${username}/${movieID}`, {}, {headers: new HttpHeaders({
+    return this.http.post(apiUrl + `/users/${username}/${movieId}`, {}, {headers: new HttpHeaders({
       Authorization: 'Bearer ' + token,
     })}).pipe(
       map(this.extractResponseData),
