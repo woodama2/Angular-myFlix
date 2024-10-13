@@ -100,7 +100,8 @@ export class ProfilePageComponent implements OnInit {
         ...res,
         id: res._id,
         password: this.userData.password, // Retain the password if not updated
-        token: this.userData.token
+        token: this.userData.token,
+        birthday: formattedBirthday // Ensure updated birthday is reflected here
       };
       localStorage.setItem("user", JSON.stringify(this.userData));
       this.getfavoriteMovies();
