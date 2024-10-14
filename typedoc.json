@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["Users/mandy/careerfoundry/Angular-myFlix/src"],
+  "out": "docs",
+  "exclude": ["**/*.spec.ts", "node_modules"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "includeVersion": true
+}
